@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -11,6 +11,7 @@ Menu {
     id: root
 
     title: qsTr("&View")
+    visible: false
 
     MenuItem {
         action: actions["toggleMenuBarAction"]

@@ -1,13 +1,15 @@
 #
 # SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
-#
+# SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
 [Desktop Entry]
 Name=Haruna Video Player
 Exec=haruna
-Icon=com.georgefb.haruna
+Icon=haruna
 Type=Application
 Categories=Qt;KDE;AudioVideo;Player;Video;
 Terminal=false
+NoDisplay=true
+PanelBehavor=3

@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -10,8 +10,8 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
-import org.kde.kirigami 2.11 as Kirigami
-import com.georgefb.haruna 1.0 as Haruna
+import org.kde.kirigami 2.15 as Kirigami
+import org.kde.haruna 1.0 as Haruna
 
 Pane {
     id: root
@@ -24,7 +24,7 @@ Pane {
     leftPadding: 0
     rightPadding: 0
     state: "hidden"
-    hoverEnabled: true
+    hoverEnabled: false
     background: Rectangle {
         color: Kirigami.Theme.backgroundColor
     }

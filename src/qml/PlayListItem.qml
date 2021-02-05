@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -10,8 +10,8 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 
-import org.kde.kirigami 2.11 as Kirigami
-import com.georgefb.haruna 1.0
+import org.kde.kirigami 2.15 as Kirigami
+import org.kde.haruna 1.0
 
 Kirigami.BasicListItem {
     id: root
@@ -33,7 +33,7 @@ Kirigami.BasicListItem {
             Label {
                 text: pad(root.rowNumber, playlistView.count.toString().length)
                 visible: PlaylistSettings.showRowNumber
-                font.pointSize: (window.isFullScreen() && playList.bigFont)
+                font.pointSize: (playList.bigFont)
                                 ? Kirigami.Units.gridUnit
                                 : Kirigami.Units.gridUnit - 6
                 horizontalAlignment: Qt.AlignCenter
@@ -69,7 +69,7 @@ Kirigami.BasicListItem {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 elide: Text.ElideRight
-                font.pointSize: (window.isFullScreen() && playList.bigFont)
+                font.pointSize: (playList.bigFont)
                                 ? Kirigami.Units.gridUnit
                                 : Kirigami.Units.gridUnit - 6
                 font.weight: isPlaying ? Font.ExtraBold : Font.Normal
@@ -88,13 +88,13 @@ Kirigami.BasicListItem {
                     id: labelMouseArea
                     anchors.fill: parent
                     acceptedButtons: Qt.NoButton
-                    hoverEnabled: true
+                    hoverEnabled: false
                 }
             }
 
             Label {
                 text: model.duration
-                font.pointSize: (window.isFullScreen() && playList.bigFont)
+                font.pointSize: (playList.bigFont)
                                 ? Kirigami.Units.gridUnit
                                 : Kirigami.Units.gridUnit - 6
                 horizontalAlignment: Qt.AlignCenter

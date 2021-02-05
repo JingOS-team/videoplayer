@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.kde.haruna.qtdbus.playvideo
+Exec=/usr/bin/haruna

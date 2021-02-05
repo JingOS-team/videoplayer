@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -23,39 +23,42 @@
 #include <QQuickStyle>
 #include <QQuickView>
 #include <QThread>
-
+#include <QDBusConnection>
+#include <QDBusError>
 #include <KAboutData>
 #include <KI18n/KLocalizedString>
 
+#include "player.h"
+#include <QFileInfo>
+#include <QSurfaceFormat>
+
+#define SERVICE_NAME            "org.kde.haruna.qtdbus.playvideo"
+
 int main(int argc, char *argv[])
 {
+
+    QApplication::setApplicationName("haruna");
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QApplication::setOrganizationName("georgefb");
-    QApplication::setOrganizationDomain("georgefb.com");
-    QApplication::setWindowIcon(QIcon::fromTheme("com.georgefb.haruna"));
-
+    QApplication::setOrganizationName("kde");
+    QApplication::setOrganizationDomain("kde.org");
+    QApplication::setWindowIcon(QIcon::fromTheme("org.kde.haruna"));
     QApplication app(argc, argv);
-
+    app.setOrganizationDomain("kde.org");
     QQuickStyle::setStyle(QStringLiteral("org.kde.desktop"));
     QQuickStyle::setFallbackStyle(QStringLiteral("fusion"));
 
+
     KAboutData aboutData(
-                QStringLiteral("haruna"),
-                i18n("Haruna Video Player"),
-                QStringLiteral("0.2.2"),
-                i18n("A simple video player."),
-                KAboutLicense::GPL_V3,
-                i18n("(c) 2019"),
-                i18n("TO DO..."),
-                QStringLiteral("http://georgefb.com/haruna"),
-                QStringLiteral("georgefb899@gmail.com"));
-
-    aboutData.addAuthor(i18n("George Florea Bănuș"),
-                        i18n("Developer"),
-                        QStringLiteral("georgefb899@gmail.com"),
-                        QStringLiteral("http://georgefb.com"));
-
+        QStringLiteral("haruna"),
+        i18n("JingOS Media Player"),
+        QStringLiteral("0.2.2"),
+        i18n("A simple meida player."),
+        KAboutLicense::GPL_V3,
+        i18n("(c) 2020"),
+        i18n("TO DO..."),
+        QStringLiteral("http://kde.org/haruna"),
+        QStringLiteral("georgefb899@gmail.com"));
     KAboutData::setApplicationData(aboutData);
 
     QCommandLineParser parser;
@@ -73,13 +76,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<TracksModel*>();
 
     std::unique_ptr<Application> myApp = std::make_unique<Application>();
-    std::unique_ptr<LockManager> lockManager = std::make_unique<LockManager>();
-    std::unique_ptr<SubtitlesFoldersModel> subsFoldersModel = std::make_unique<SubtitlesFoldersModel>();
 
-    for (auto i = 0; i < parser.positionalArguments().size(); ++i) {
-        myApp->addArgument(i, parser.positionalArguments().at(i));
-    }
-
+    PlayListModel playListModel;
     auto worker = Worker::instance();
     auto thread = new QThread();
     worker->moveToThread(thread);
@@ -97,24 +95,27 @@ int main(int argc, char *argv[])
         }
     }, Qt::QueuedConnection);
 
-    PlayListModel playListModel;
     engine.rootContext()->setContextProperty("playListModel", &playListModel);
     qmlRegisterUncreatableType<PlayListModel>("PlayListModel", 1, 0, "PlayListModel",
-                                               QStringLiteral("PlayListModel should not be created in QML"));
+            QStringLiteral("PlayListModel should not be created in QML"));
 
     engine.rootContext()->setContextProperty(QStringLiteral("app"), myApp.get());
     qmlRegisterUncreatableType<Application>("Application", 1, 0, "Application",
                                             QStringLiteral("Application should not be created in QML"));
 
-    engine.rootContext()->setContextProperty(QStringLiteral("lockManager"), lockManager.release());
-    qmlRegisterUncreatableType<LockManager>("LockManager", 1, 0, "LockManager",
-                                            QStringLiteral("LockManager should not be created in QML"));
-
-    engine.rootContext()->setContextProperty(QStringLiteral("subsFoldersModel"), subsFoldersModel.release());
-
     myApp.get()->setupQmlSettingsTypes();
 
     engine.load(url);
+
+
+    auto player = new Player(engine, playListModel);
+    player->setDate(argc, argv);
+    auto myThread = new QThread();
+    player->moveToThread(myThread);
+    QObject::connect(myThread, &QThread::started,
+                     player,  &Player::start);
+    myThread->start();
+
     return QApplication::exec();
 }
 

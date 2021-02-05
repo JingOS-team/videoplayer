@@ -1,13 +1,13 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
-import com.georgefb.haruna 1.0
+import org.kde.haruna 1.0
 
 QtObject {
     id: root
@@ -123,18 +123,6 @@ QtObject {
         Component.onCompleted: list["playNextAction"] = playNextAction
 
         onTriggered: {
-            const nextFileRow = playListModel.getPlayingVideo() + 1
-            if (nextFileRow < playList.playlistView.count) {
-                const nextFile = playListModel.getPath(nextFileRow)
-                mpv.command(["loadfile", nextFile])
-                playListModel.setPlayingVideo(nextFileRow)
-            } else {
-                // Last file in playlist
-                if (PlaylistSettings.repeat) {
-                    mpv.command(["loadfile", playListModel.getPath(0)])
-                    playListModel.setPlayingVideo(0)
-                }
-            }
         }
     }
 
@@ -143,17 +131,17 @@ QtObject {
         property var qaction: app.action("playPrevious")
         text: qaction.text
         shortcut: qaction.shortcutName()
-        icon.name: qaction.iconName()
+//        icon.name: qaction.iconName()
 
         Component.onCompleted: list["playPreviousAction"] = playPreviousAction
 
         onTriggered: {
-            if (playListModel.getPlayingVideo() !== 0) {
-                const previousFileRow = playListModel.getPlayingVideo() - 1
-                const previousFile = playListModel.getPath(previousFileRow)
-                window.openFile(previousFile, true, false)
-                playListModel.setPlayingVideo(previousFileRow)
-            }
+            // if (playListModel.getPlayingVideo() !== 0) {
+            //     const previousFileRow = playListModel.getPlayingVideo() - 1
+            //     const previousFile = playListModel.getPath(previousFileRow)
+            //     window.openFile(previousFile, true, false)
+            //     playListModel.setPlayingVideo(previousFileRow)
+            // }
         }
     }
 
@@ -450,9 +438,7 @@ QtObject {
 
         onTriggered: {
             if (settingsEditor.state === "visible") {
-                settingsEditor.state = "hidden"
             } else {
-                settingsEditor.state = "visible"
             }
         }
     }
@@ -935,8 +921,6 @@ QtObject {
         Component.onCompleted: list["toggleHeaderAction"] = toggleHeaderAction
 
         onTriggered: {
-            header.visible = !header.visible
-            GeneralSettings.showHeader = header.visible
         }
     }
 

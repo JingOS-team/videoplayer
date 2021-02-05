@@ -16,10 +16,10 @@ LockManager::LockManager(QObject *parent)
     , m_inhibit()
 {
     m_iface = new OrgFreedesktopScreenSaverInterface(
-                QStringLiteral("org.freedesktop.ScreenSaver"),
-                QStringLiteral("/org/freedesktop/ScreenSaver"),
-                QDBusConnection::sessionBus(),
-                this);
+        QStringLiteral("org.freedesktop.ScreenSaver"),
+        QStringLiteral("/org/freedesktop/ScreenSaver"),
+        QDBusConnection::sessionBus(),
+        this);
 }
 
 void LockManager::setInhibitionOff()
@@ -30,6 +30,6 @@ void LockManager::setInhibitionOff()
 void LockManager::setInhibitionOn()
 {
     m_cookie = m_iface->Inhibit(
-                QStringLiteral("Haruna Video Player"),
-                i18n("Playing video."));
+                   QStringLiteral("Haruna Video Player"),
+                   i18n("Playing video."));
 }

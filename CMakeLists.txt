@@ -1,6 +1,6 @@
 #
 # SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
-#
+# SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -58,10 +58,11 @@ set_package_properties(KF5XmlGui PROPERTIES
     TYPE REQUIRED
     URL "https://api.kde.org/frameworks/kxmlgui/html/index.html")
 
+find_package(KF5WindowSystem REQUIRED)
 add_subdirectory(src)
 
-install(FILES data/com.georgefb.haruna.desktop DESTINATION ${KDE_INSTALL_APPDIR})
-install(FILES data/com.georgefb.haruna.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
-ecm_install_icons(ICONS data/256-apps-com.georgefb.haruna.svg DESTINATION ${KDE_INSTALL_ICONDIR})
+install(FILES data/org.kde.haruna.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES data/org.kde.haruna.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+ecm_install_icons(ICONS data/haruna.svg DESTINATION ${KDE_INSTALL_ICONDIR})
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -29,5 +29,29 @@
         <file>qml/Menus/TrackMenuItems.qml</file>
         <file>qml/Settings/SelectActionPopup.qml</file>
         <file>qml/Settings/VideoSettings.qml</file>
+        <file>qml/VerticalSlider.qml</file>
+        <file>qml/BrightnessItem.qml</file>
+        <file>qml/QuickSettings.qml</file>
+        <file>player_bri.png</file>
+        <file>player_vol.png</file>
+        <file>image/audio_back.png</file>
+        <file>image/audio_like.png</file>
+        <file>image/audio_next.png</file>
+        <file>image/audio_play.png</file>
+        <file>image/audio_prew.png</file>
+        <file>image/audio_vol.png</file>
+        <file>image/audio_pause.png</file>
+        <file>image/audio_back.svg</file>
+        <file>image/audio_next_unableclick.png</file>
+        <file>image/audio_prew_unableclick.png</file>
+
+        <file>image/vol_silent.png</file>
+        <file>image/vol_low.png</file>
+        <file>image/vol_mid.png</file>
+        <file>image/bri.png</file>
+        <file>image/video_back.png</file>
+        <file>image/video_forward.png</file>
+
+        
     </qresource>
 </RCC>

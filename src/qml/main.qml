@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -11,8 +11,8 @@ import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 import Qt.labs.platform 1.0 as Platform
 
-import org.kde.kirigami 2.11 as Kirigami
-import com.georgefb.haruna 1.0
+import org.kde.kirigami 2.15 as Kirigami
+import org.kde.haruna 1.0
 
 import mpv 1.0
 import "Menus"
@@ -22,149 +22,91 @@ Kirigami.ApplicationWindow {
     id: window
 
     property var configure: app.action("configure")
-    property int preFullScreenVisibility
+    property int  deviceWidth: 1920
+    property int deviceHeight: 1200
+    property real officalScale: 0.8
 
     visible: true
     title: mpv.mediaTitle || qsTr("Haruna")
-    width: 1200
-    minimumWidth: 700
-    height: 720
-    minimumHeight: 450
+    width: deviceWidth
+    minimumWidth: 640
+    height: deviceHeight
+    minimumHeight: 400
     color: Kirigami.Theme.backgroundColor
 
     onVisibilityChanged: {
-        if (!window.isFullScreen()) {
-            preFullScreenVisibility = visibility
+        if(window.visibility == 0)
+        {
+            mpv.setProperty("pause", true)
+        }else
+        {
+            window.showFullScreen() 
         }
     }
 
-    header: Header { id: header }
-
-    menuBar: MenuBar {
-
-        hoverEnabled: true
-        implicitHeight: 24
-        visible: !window.isFullScreen() && GeneralSettings.showMenuBar
-        background: Rectangle {
-            color: Kirigami.Theme.backgroundColor
+    onActiveChanged:
+    {
+        if(!Qt.application.active)
+        {
+            mpv.setProperty("pause", true)
         }
-
-        FileMenu {}
-        ViewMenu {}
-        PlaybackMenu {}
-        SubtitlesMenu {}
-        AudioMenu {}
-        SettingsMenu {}
     }
 
-    Menu {
-        id: mpvContextMenu
 
-        modal: true
+    property Action playPauseAction: Action {
+        id: playPauseAction
+        text: qsTr("Play/Pause")
+        icon.name: "media-playback-pause"
+        shortcut: "Space"
 
-        FileMenu {}
-        ViewMenu {}
-        PlaybackMenu {}
-        SubtitlesMenu {}
-        AudioMenu {}
-        SettingsMenu {}
+        onTriggered:
+        {
+            mpv.setProperty("pause", !mpv.getProperty("pause"))
+        }
     }
-
-    Actions { id: actions }
-
-    SystemPalette { id: systemPalette; colorGroup: SystemPalette.Active }
-
-    SettingsEditor { id: settingsEditor }
 
     MpvVideo {
         id: mpv
-
         Osd { id: osd }
     }
 
     PlayList { id: playList }
 
-    Footer { id: footer }
+    Header
+    {
+        id: header
+        width: parent.width
+        height: officalScale * 160
+        visible: true
 
-    Platform.FileDialog {
-        id: fileDialog
-        folder: Platform.StandardPaths.writableLocation(Platform.StandardPaths.MoviesLocation)
-        title: "Select file"
-        fileMode: Platform.FileDialog.OpenFile
-
-        onAccepted: {
-            openFile(fileDialog.file.toString(), true, true)
-            // the timer scrolls the playlist to the playing file
-            // once the table view rows are loaded
-            mpv.scrollPositionTimer.start()
-            mpv.focus = true
-        }
-        onRejected: mpv.focus = true
-    }
-
-    Popup {
-        id: openUrlPopup
-        width: 500
-        x: 10
-        y: 10
-
-        onOpened: {
-            openUrlTextField.forceActiveFocus(Qt.MouseFocusReason)
-            openUrlTextField.selectAll()
-        }
-
-        RowLayout {
+        background: Rectangle {
             anchors.fill: parent
-            TextField {
-                id: openUrlTextField
-                Layout.fillWidth: true
-                Component.onCompleted: text = GeneralSettings.lastUrl
-
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
-                        openFile(openUrlTextField.text, true, false)
-                        GeneralSettings.lastUrl = openUrlTextField.text
-                        openUrlPopup.close()
-                        openUrlTextField.clear()
-                        // clear playlist to prevent existing files in the playlist
-                        // to be loaded when playback ends
-                        playList.playlistView.model = 0
-                    }
-                    if (event.key === Qt.Key_Escape) {
-                        openUrlPopup.close()
-                    }
-                }
-            }
-            Button {
-                id: openUrlButton
-                text: qsTr("Open")
-
-                onClicked: {
-                    openFile(openUrlTextField.text, true, false)
-                    GeneralSettings.lastUrl = openUrlTextField.text
-                    openUrlPopup.close()
-                    openUrlTextField.clear()
-                    playList.playlistView.model = 0
+            color: "transparent"
+            LinearGradient {            
+                anchors.fill: parent
+                start: Qt.point(0, 0)
+                gradient: Gradient {
+                    GradientStop {  position: 0.0;    color: "#a0000000" }
+                    GradientStop {  position: 1.0;    color: "#00000000" }
                 }
             }
         }
     }
 
-    Component.onCompleted: app.activateColorScheme(GeneralSettings.colorScheme)
+    Footer {
+        id: footer
+        height: officalScale * 160
+    }
 
     function openFile(path, startPlayback, loadSiblings) {
-        mpv.setProperty("ytdl-format", PlaybackSettings.ytdlFormat)
-        mpv.command(["loadfile", path])
-        mpv.setProperty("pause", !startPlayback)
-        if (loadSiblings) {
-            // get video files from same folder as the opened file
-            playListModel.getVideos(path)
-        }
+    mpv.command(["loadfile", path])
+    mpv.setProperty("pause", !startPlayback)
 
-        GeneralSettings.lastPlayedFile = path
-    }
+    var pathStr = path.toString();
+    var index = pathStr.lastIndexOf("/")
+    header.currentname = pathStr.substring(index + 1)
+    mpv.setProperty("currentname", pathStr.substring(index + 1))
 
-    function isFullScreen() {
-        return window.visibility === Window.FullScreen
+    GeneralSettings.lastPlayedFile = path
     }
 }

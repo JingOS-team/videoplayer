@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -39,6 +39,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    int type;
+
 
 signals:
     void videoAdded(int index, QString path);
@@ -47,13 +49,15 @@ signals:
 public slots:
     Playlist items() const;
     QString getPath(int i);
-    void getVideos(QString path);
+    void getVideos(QStringList videoFiles);
     void setPlayingVideo(int playingVideo);
     int getPlayingVideo() const;
+    int getPlaylistSize() const;
 
 private:
     Playlist m_playList;
     int m_playingVideo = -1;
+
 };
 
 #endif // PLAYLISTMODEL_H

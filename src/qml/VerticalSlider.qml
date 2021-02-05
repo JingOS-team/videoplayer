@@ -1,0 +1,58 @@
+/*
+ * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+import QtQml 2.12
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Shapes 1.12
+import QtGraphicalEffects 1.12
+
+import org.kde.kirigami 2.15 as Kirigami
+import org.kde.haruna 1.0
+
+Slider {
+    id: root
+
+    from: 0
+    to: 100
+    value: mpv.volume
+    implicitWidth: 25
+    implicitHeight: 100
+    wheelEnabled: true
+    stepSize: GeneralSettings.volumeStep
+    leftPadding: 0
+    rightPadding: 0
+
+    handle: Item { visible: false }
+
+    background: Rectangle {
+        id: harunaSliderBG
+        color: Kirigami.Theme.alternateBackgroundColor
+
+        Rectangle {
+            width:  parent.width
+            height: visualPosition *parent.height
+            color: "white" /*Kirigami.Theme.highlightColor*/
+            radius: 0
+        }
+    }
+
+    Label {
+        id: progressBarToolTip
+        text: root.value
+        anchors.centerIn: root
+        color: "#fff"
+        layer.enabled: true
+        layer.effect: DropShadow { verticalOffset: 1; color: "#111"; radius: 5; spread: 0.3; samples: 17 }
+    }
+
+    onValueChanged: {
+        mpv.volume = value.toFixed(0)
+        GeneralSettings.volume = value.toFixed(0)
+    }
+
+}

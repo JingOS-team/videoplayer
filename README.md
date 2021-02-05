@@ -1,10 +1,10 @@
 <!--
 SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
-
+SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
-## [Donate (Patreon)](https://www.patreon.com/georgefb)
+## Base On Haruna (https://github.com/g-fb/haruna)
 
 # Haruna Video Player
 
@@ -13,8 +13,8 @@ Haruna is an open source video player built with Qt/QML on top of libmpv.
 # Install
 
 ```
-flatpak install flathub com.georgefb.haruna
-flatpak run com.georgefb.haruna
+flatpak install flathub org.kde.haruna
+flatpak run org.kde.haruna
 ```
 
 [Flatpak setup guide](https://flatpak.org/setup/)
@@ -23,19 +23,33 @@ flatpak run com.georgefb.haruna
 
 these are just some features that set Haruna apart from others players
 
-- play online videos, through youtube-dl
+- Support double finger sliding to adjust volume and brightness
 
-- toggle playlist with mouse-over, playlist overlays the video
+- When switching to the background, the playback will be automatically suspended
 
-- auto skip chapter containing certain words
+- Convenient and quick switch between the previous video and the next one
 
-- configurable shortcuts and mouse buttons
+- Support sliding left and right to adjust video progress
 
-- quick jump to next chapter by middle click on progress bar
+- Brand new UI & UE with JingOS-style , based on JingUI Framework
+
+- Run on JingOS platform
+
+- Support keyboard & touchpad & mouse & screen touch
 
 # Screenshots
 
 Main Window
 ![Haruna main window](./data/screenshots/haruna-dark.png)
+
+# Links
+
+- Home: www.jingos.com
+  
+- Project page: github.com/jingOS-team/jing-haruna
+  
+- File issues: github.com/jingOS-team/jing-haruna/issues
+  
+- Development channel: www.jingos.com
 
 #### [More Screenshots](./Screenshots.md)

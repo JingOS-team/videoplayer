@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -14,6 +14,10 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 #include <QUrl>
+
+#include <QDBusConnection>
+#include <QDBusReply>
+#include <QDBusInterface>
 
 PlayListModel::PlayListModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -67,33 +71,14 @@ QHash<int, QByteArray> PlayListModel::roleNames() const
     return roles;
 }
 
-void PlayListModel::getVideos(QString path)
+void PlayListModel::getVideos(QStringList videoFiles)
 {
     beginResetModel();
     m_playList.clear();
     endResetModel();
     m_playingVideo = -1;
-    path = QUrl(path).toLocalFile().isEmpty() ? path : QUrl(path).toLocalFile();
-    QFileInfo pathInfo(path);
-    QStringList videoFiles;
-    if (pathInfo.exists() && pathInfo.isFile()) {
-        QDirIterator it(pathInfo.absolutePath(), QDir::Files, QDirIterator::NoIteratorFlags);
-        while (it.hasNext()) {
-            QString file = it.next();
-            QFileInfo fileInfo(file);
-            QMimeDatabase db;
-            QMimeType type = db.mimeTypeForFile(file);
-            if (fileInfo.exists() && type.name().startsWith("video/")) {
-                videoFiles.append(fileInfo.absoluteFilePath());
-            }
-        }
-    }
-    QCollator collator;
-    collator.setNumericMode(true);
-    std::sort(videoFiles.begin(), videoFiles.end(), collator);
 
     beginInsertRows(QModelIndex(), 0, videoFiles.count() - 1);
-
     for (int i = 0; i < videoFiles.count(); ++i) {
         QFileInfo fileInfo(videoFiles.at(i));
         auto video = std::make_shared<PlayListItem>();
@@ -103,12 +88,8 @@ void PlayListModel::getVideos(QString path)
         video->setFolderPath(fileInfo.absolutePath());
         video->setIsPlaying(false);
         m_playList.emplace(i, video);
-        if (path == videoFiles.at(i)) {
-            setPlayingVideo(i);
-        }
         emit videoAdded(i, video->filePath());
     }
-
     endInsertRows();
 }
 
@@ -122,21 +103,50 @@ int PlayListModel::getPlayingVideo() const
     return m_playingVideo;
 }
 
+int PlayListModel::getPlaylistSize() const
+{
+    return m_playList.size();
+}
+
 QString PlayListModel::getPath(int i)
 {
     return m_playList[i]->filePath();
 }
 
+
+#define SERVICE_NAME            "org.kde.media.jingos.media"
 void PlayListModel::setPlayingVideo(int playingVideo)
 {
-    if (m_playingVideo != -1) {
+    if (m_playingVideo != -1) 
+    {
         m_playList[m_playingVideo]->setIsPlaying(false);
         emit dataChanged(index(m_playingVideo, 0), index(m_playingVideo, 0));
         m_playList[playingVideo]->setIsPlaying(true);
         emit dataChanged(index(playingVideo, 0), index(playingVideo, 0));
-    } else {
+    } else 
+    {
         m_playList[playingVideo]->setIsPlaying(true);
     }
     m_playingVideo = playingVideo;
     emit playingVideoChanged();
+
+    if (type != 1) 
+    {
+        return;
+    }
+
+    if (!QDBusConnection::sessionBus().isConnected()) 
+    {
+        return;
+    }
+
+    QDBusInterface iface(SERVICE_NAME, "/services/jingos_dbus/jingosdbus", "", QDBusConnection::sessionBus());
+    if (iface.isValid()) 
+    {
+        QDBusReply<QString> reply = iface.call("updateLately", playingVideo);
+        if (reply.isValid()) 
+        {
+            return;
+        }
+    }
 }

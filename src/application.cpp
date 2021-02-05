@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -40,13 +40,13 @@ Application::Application(QObject *parent)
 
 void Application::setupQmlSettingsTypes()
 {
-    qmlRegisterSingletonType<AudioSettings>("com.georgefb.haruna", 1, 0, "AudioSettings", &AudioSettings::provider);
-    qmlRegisterSingletonType<GeneralSettings>("com.georgefb.haruna", 1, 0, "GeneralSettings", &GeneralSettings::provider);
-    qmlRegisterSingletonType<MouseSettings>("com.georgefb.haruna", 1, 0, "MouseSettings", &MouseSettings::provider);
-    qmlRegisterSingletonType<PlaybackSettings>("com.georgefb.haruna", 1, 0, "PlaybackSettings", &PlaybackSettings::provider);
-    qmlRegisterSingletonType<PlaylistSettings>("com.georgefb.haruna", 1, 0, "PlaylistSettings", &PlaylistSettings::provider);
-    qmlRegisterSingletonType<SubtitlesSettings>("com.georgefb.haruna", 1, 0, "SubtitlesSettings", &SubtitlesSettings::provider);
-    qmlRegisterSingletonType<VideoSettings>("com.georgefb.haruna", 1, 0, "VideoSettings", &VideoSettings::provider);
+    qmlRegisterSingletonType<AudioSettings>("org.kde.haruna", 1, 0, "AudioSettings", &AudioSettings::provider);
+    qmlRegisterSingletonType<GeneralSettings>("org.kde.haruna", 1, 0, "GeneralSettings", &GeneralSettings::provider);
+    qmlRegisterSingletonType<MouseSettings>("org.kde.haruna", 1, 0, "MouseSettings", &MouseSettings::provider);
+    qmlRegisterSingletonType<PlaybackSettings>("org.kde.haruna", 1, 0, "PlaybackSettings", &PlaybackSettings::provider);
+    qmlRegisterSingletonType<PlaylistSettings>("org.kde.haruna", 1, 0, "PlaylistSettings", &PlaylistSettings::provider);
+    qmlRegisterSingletonType<SubtitlesSettings>("org.kde.haruna", 1, 0, "SubtitlesSettings", &SubtitlesSettings::provider);
+    qmlRegisterSingletonType<VideoSettings>("org.kde.haruna", 1, 0, "VideoSettings", &VideoSettings::provider);
 }
 
 QString Application::formatTime(const double time)
@@ -115,7 +115,7 @@ void Application::activateColorScheme(const QString &name)
 void Application::configureShortcuts()
 {
     KShortcutsDialog dlg(KShortcutsEditor::ApplicationAction, KShortcutsEditor::LetterShortcutsAllowed, nullptr);
-    connect(&dlg, &KShortcutsDialog::accepted, this, [ = ](){
+    connect(&dlg, &KShortcutsDialog::accepted, this, [ = ]() {
         m_collection.writeSettings(m_shortcuts);
         m_config->sync();
     });

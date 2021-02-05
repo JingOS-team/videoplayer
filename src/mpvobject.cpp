@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -68,7 +68,7 @@ QOpenGLFramebufferObject * MpvRenderer::createFramebufferObject(const QSize &siz
     if (!obj->mpv_gl)
     {
         mpv_opengl_init_params gl_init_params{get_proc_address_mpv, nullptr, nullptr};
-        mpv_render_param params[]{
+        mpv_render_param params[] {
             {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
             {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &gl_init_params},
             {MPV_RENDER_PARAM_INVALID, nullptr}
@@ -95,7 +95,7 @@ MpvObject::MpvObject(QQuickItem * parent)
 
 //    mpv_set_option_string(mpv, "terminal", "yes");
 //    mpv_set_option_string(mpv, "msg-level", "all=v");
-    setProperty("hwdec", "auto");
+    setProperty("hwdec", "vaapi");
     setProperty("screenshot-template", "%x/screenshots/%n");
 
     mpv_observe_property(mpv, 0, "media-title", MPV_FORMAT_STRING);
@@ -354,7 +354,6 @@ void MpvObject::eventHandler()
                         m_secondsWatched << pos;
                         setWatchPercentage(m_secondsWatched.count() * 100 / duration);
                     }
-
                     emit positionChanged();
                 }
             } else if (strcmp(prop->name, "media-title") == 0) {
@@ -416,7 +415,8 @@ void MpvObject::eventHandler()
             }
             break;
         }
-        default: ;
+        default:
+            ;
             // Ignore uninteresting or unknown events.
         }
     }

@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- *
+ * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -20,6 +20,7 @@ GeneralSettings::GeneralSettings(QObject *parent)
         {"LastPlayedFile", QVariant(QStringLiteral())},
         {"LastUrl",        QVariant(QStringLiteral())},
         {"Volume",         QVariant(75)},
+        {"Brightness",     QVariant(75)},
         {"ShowMenuBar",    QVariant(true)},
         {"ShowHeader",     QVariant(true)},
         {"ColorScheme",    QVariant(QStringLiteral())}
@@ -108,6 +109,20 @@ void GeneralSettings::setVolume(int vol)
     }
     set("Volume", QString::number(vol));
     emit volumeChanged();
+}
+
+int GeneralSettings::brightness()
+{
+    return get("Brightness").toInt();
+}
+
+void GeneralSettings::setBrightness(int value)
+{
+    if (value == brightness()) {
+        return;
+    }
+    set("Brightness", QString::number(value));
+    emit brightnessChanged();
 }
 
 QString GeneralSettings::lastPlayedFile()
