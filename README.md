@@ -21,7 +21,7 @@ flatpak run org.kde.haruna
 
 # Features
 
-these are just some features that set Haruna apart from others players
+These are just some features that set Jing-Haruna apart from others players
 
 - Support double finger sliding to adjust volume and brightness
 
