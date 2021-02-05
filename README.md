@@ -37,10 +37,6 @@ these are just some features that set Haruna apart from others players
 
 - Support keyboard & touchpad & mouse & screen touch
 
-# Screenshots
-
-Main Window
-![Haruna main window](./data/screenshots/haruna-dark.png)
 
 # Links
 
@@ -52,4 +48,3 @@ Main Window
   
 - Development channel: www.jingos.com
 
-#### [More Screenshots](./Screenshots.md)
