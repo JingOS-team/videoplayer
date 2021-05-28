@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -50,15 +50,15 @@ int main(int argc, char *argv[])
 
 
     KAboutData aboutData(
-        QStringLiteral("haruna"),
-        i18n("JingOS Media Player"),
-        QStringLiteral("0.2.2"),
-        i18n("A simple meida player."),
-        KAboutLicense::GPL_V3,
-        i18n("(c) 2020"),
-        i18n("TO DO..."),
-        QStringLiteral("http://kde.org/haruna"),
-        QStringLiteral("georgefb899@gmail.com"));
+                QStringLiteral("haruna"),
+                i18n("JingOS Media Player"),
+                QStringLiteral("0.2.2"),
+                i18n("A simple meida player."),
+                KAboutLicense::GPL_V3,
+                i18n("(c) 2020"),
+                i18n("TO DO..."),
+                QStringLiteral("http://kde.org/haruna"),
+                QStringLiteral("georgefb899@gmail.com"));
     KAboutData::setApplicationData(aboutData);
 
     QCommandLineParser parser;
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("playListModel", &playListModel);
     qmlRegisterUncreatableType<PlayListModel>("PlayListModel", 1, 0, "PlayListModel",
-            QStringLiteral("PlayListModel should not be created in QML"));
+                                               QStringLiteral("PlayListModel should not be created in QML"));
 
     engine.rootContext()->setContextProperty(QStringLiteral("app"), myApp.get());
     qmlRegisterUncreatableType<Application>("Application", 1, 0, "Application",

@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -9,6 +9,7 @@
 
 #include <QtQuick/QQuickFramebufferObject>
 
+// #include <mpv/client.h>
 #include <mpv/render_gl.h>
 #include "qthelper.h"
 
@@ -100,7 +101,7 @@ class MpvObject : public QQuickFramebufferObject
     double remaining();
     double duration();
     bool pause();
-
+    
     int volume();
     void setVolume(int value);
 

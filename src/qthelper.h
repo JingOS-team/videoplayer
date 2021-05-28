@@ -1,11 +1,14 @@
 /*
  * SPDX-FileCopyrightText: https://github.com/mpv-player
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: WTFPL
  */
 
 #ifndef LIBMPV_QTHELPER_H_
 #define LIBMPV_QTHELPER_H_
+
+// #include <mpv/client.h>
+
 #include <cstring>
 
 #include <QVariant>
@@ -23,9 +26,7 @@ class Handle
 {
     struct container {
         container(mpv_handle *h) : mpv(h) {}
-        ~container() {
-            mpv_terminate_destroy(mpv);
-        }
+        ~container() { mpv_terminate_destroy(mpv); }
         mpv_handle *mpv;
     };
     QSharedPointer<container> sptr;
@@ -45,9 +46,7 @@ public:
     }
 
     // Return the raw handle; for use with the libmpv C API.
-    operator mpv_handle*() const {
-        return sptr ? (*sptr).mpv : 0;
-    }
+    operator mpv_handle*() const { return sptr ? (*sptr).mpv : 0; }
 };
 
 static inline QVariant node_to_variant(const mpv_node *node)
@@ -89,9 +88,7 @@ struct node_builder {
     ~node_builder() {
         free_node(&node_);
     }
-    mpv_node *node() {
-        return &node_;
-    }
+    mpv_node *node() { return &node_; }
 private:
     Q_DISABLE_COPY(node_builder)
     mpv_node node_;
@@ -110,7 +107,7 @@ private:
                 goto err;
         }
         return list;
-err:
+    err:
         free_node(dst);
         return NULL;
     }
@@ -173,7 +170,7 @@ err:
             goto fail;
         }
         return;
-fail:
+    fail:
         dst->format = MPV_FORMAT_NONE;
     }
     void free_node(mpv_node *dst) {
@@ -197,8 +194,7 @@ fail:
             delete list;
             break;
         }
-        default:
-            ;
+        default: ;
         }
         dst->format = MPV_FORMAT_NONE;
     }
@@ -210,9 +206,7 @@ fail:
 struct node_autofree {
     mpv_node *ptr;
     node_autofree(mpv_node *a_ptr) : ptr(a_ptr) {}
-    ~node_autofree() {
-        mpv_free_node_contents(ptr);
-    }
+    ~node_autofree() { mpv_free_node_contents(ptr); }
 };
 
 /**
@@ -334,7 +328,7 @@ static inline QVariant get_property(mpv_handle *ctx, const QString &name)
  * @return mpv error code (<0 on error, >= 0 on success)
  */
 static inline int set_property(mpv_handle *ctx, const QString &name,
-                               const QVariant &v)
+                                       const QVariant &v)
 {
     node_builder node(v);
     return mpv_set_property(ctx, name.toUtf8().data(), MPV_FORMAT_NODE, node.node());

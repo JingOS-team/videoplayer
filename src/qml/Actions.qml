@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -123,6 +123,18 @@ QtObject {
         Component.onCompleted: list["playNextAction"] = playNextAction
 
         onTriggered: {
+            // const nextFileRow = playListModel.getPlayingVideo() + 1
+            // if (nextFileRow < playList.playlistView.count) {
+            //     const nextFile = playListModel.getPath(nextFileRow)
+            //     mpv.command(["loadfile", nextFile])
+            //     playListModel.setPlayingVideo(nextFileRow)
+            // } else {
+            //     // Last file in playlist
+            //     if (PlaylistSettings.repeat) {
+            //         mpv.command(["loadfile", playListModel.getPath(0)])
+            //         playListModel.setPlayingVideo(0)
+            //     }
+            // }
         }
     }
 
@@ -921,6 +933,8 @@ QtObject {
         Component.onCompleted: list["toggleHeaderAction"] = toggleHeaderAction
 
         onTriggered: {
+            // header.visible = !header.visible
+            // GeneralSettings.showHeader = header.visible
         }
     }
 

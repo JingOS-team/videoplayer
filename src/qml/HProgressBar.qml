@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -44,14 +44,14 @@ Slider {
             }
         }
         y: - height /2 + 4 + 15
-        width: 46
-        height: 40
+        width: 23
+        height: 20
         anchors.verticalCenter:parent.verticalCenter
         color: 
         {
             "#FFF6F6F6"
         }
-        radius: 8
+        radius: 6
 
         Rectangle
         {
@@ -61,7 +61,7 @@ Slider {
             {
                 "#FFFFFFFF"
             }
-            radius: 8
+            radius: 6
             anchors.top: parent.top
         }
     } 
@@ -69,15 +69,16 @@ Slider {
     background: Rectangle {
         id: progressBarBackground
         width: availableWidth
-        height: 10
-        color: "#4DEBEBF5"
+        height: 5
+        color: "#4DEBEBF5"//整个进度条默认颜色
         radius: 2
-        anchors.top: parent.top
-        anchors.topMargin: 15
+        // anchors.top: parent.top
+        // anchors.topMargin: 15
+        anchors.verticalCenter:parent.verticalCenter
 
-        Rectangle {
+        Rectangle {//已经播放的颜色
             width: visualPosition * parent.width
-            height: 10
+            height: 5
             radius: 2
             color: "#ff43BDF4"
         }
@@ -87,6 +88,7 @@ Slider {
     onPressedChanged: {
         if (pressed) {
             seekStarted = true
+            mpv.timerStarted = false
         } else {
             mpv.command(["seek", value, "absolute"])
             seekStarted = false

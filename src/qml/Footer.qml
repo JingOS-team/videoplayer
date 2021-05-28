@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -15,6 +15,7 @@ ToolBar {
     property alias progressBar: progressBar
     property alias footerRow: footerRow
     property alias timeInfo: timeInfo
+    // property alias volume: volume
 
     property bool unableClickPrew: 
     {
@@ -85,7 +86,7 @@ ToolBar {
         anchors.fill: parent
 
         color: "transparent"
-        LinearGradient {        
+        LinearGradient {            ///--[Mark]
              anchors.fill: parent
              start: Qt.point(0, 0)
              gradient: Gradient {
@@ -100,22 +101,19 @@ ToolBar {
         anchors.fill: parent
 
         Kirigami.JIconButton {
-            width: window.officalScale * 60 + 10
+            width: 30 + 10
             height: width
             source: mpv.pause ? "qrc:/image/audio_play.png" : "qrc:/image/audio_pause.png"
             Layout.alignment: Qt.AlignVCenter |Qt.AlignLeft
-            Layout.leftMargin: 50
+            Layout.leftMargin: 35
 
-            MouseArea{
-                anchors.fill: parent
                 onClicked: {
                     mpv.setProperty("pause", !mpv.getProperty("pause"))
                 }
-            }
         }
 
-        Kirigami.JIconButton {
-            width: window.officalScale * 44 + 10
+        Kirigami.JIconButton {//上一个
+            width: 22 + 10
             height: width
             hoverEnabled: !unableClickPrew
             source: 
@@ -128,10 +126,8 @@ ToolBar {
                     "qrc:/image/audio_prew.png"
                 }
             }
-            Layout.leftMargin: 70
+            Layout.leftMargin: 35
             Layout.alignment: Qt.AlignVCenter
-            MouseArea{
-                anchors.fill: parent
                 onClicked: {
 
                     if(unableClickPrew)
@@ -145,14 +141,13 @@ ToolBar {
                     playListModel.setPlayingVideo(previousIndex)
                     mpv.isLastStatus = false
                 }
-            }
         }
 
-        Kirigami.JIconButton {
-            width: window.officalScale * 44 + 10
+        Kirigami.JIconButton {//下一个
+            width: 22 + 10
             height: width
             hoverEnabled: !unableClickNext
-            Layout.leftMargin: 70 * window.officalScale
+            Layout.leftMargin: 35
             source:
             {
                 if(unableClickNext)
@@ -165,8 +160,6 @@ ToolBar {
             }
             Layout.alignment: Qt.AlignVCenter
 
-            MouseArea{
-                anchors.fill: parent
                 onClicked: {
                     if(unableClickNext)
                     {
@@ -177,11 +170,6 @@ ToolBar {
                     window.openFile(nextFile, true, false)
                     playListModel.setPlayingVideo(nextPlayIndex)
                 }
-
-                ToolTip {
-                    text: qsTr("Play Next File")
-                }
-            }
         }
 
         Label {
@@ -190,7 +178,7 @@ ToolBar {
             text: positionTimeInfoTextMetrics.text
             font.pointSize: positionTimeInfoTextMetrics.font.pointSize
             horizontalAlignment: Qt.AlignHCenter
-            Layout.leftMargin: 90 * window.officalScale
+            Layout.leftMargin: 45
             Layout.preferredWidth: 86 * window.officalScale
             color: "#fff"
 
@@ -198,32 +186,33 @@ ToolBar {
                 id: positionTimeInfoTextMetrics
 
                 text: app.formatTime(mpv.position)
-                font.pointSize: 22 * window.officalScale
+                font.pixelSize: 11
             }
         }
 
         HProgressBar {
             id: progressBar
             Layout.alignment: Qt.AlignVCenter
-            Layout.leftMargin: 20 * window.officalScale
-            Layout.rightMargin: 20 * window.officalScale
+            Layout.leftMargin: 13
+            Layout.rightMargin: 13
             Layout.fillWidth: true
         }
 
-        Label {
+        Label {//时长
             id: timeInfo
             color: "#fff"
             text: timeInfoTextMetrics.text
             font.pointSize: timeInfoTextMetrics.font.pointSize
             horizontalAlignment: Qt.AlignHCenter
-            Layout.leftMargin: 10 * window.officalScale
+            Layout.leftMargin: 10
             Layout.preferredWidth: 86 * window.officalScale
 
             TextMetrics {
                 id: timeInfoTextMetrics
 
                 text: app.formatTime(mpv.duration)
-                font.pointSize: 22 * window.officalScale
+                // font.pointSize: 22 * window.officalScale
+                font.pixelSize: 11
             }
 
             ToolTip {
@@ -251,8 +240,7 @@ ToolBar {
             }
         }
 
-        Image 
-        {
+        Image {
             visible: false
             width: window.officalScale * 20
             height: width
@@ -263,21 +251,19 @@ ToolBar {
             Layout.leftMargin: 70
             MouseArea{
                 anchors.fill: parent
-                onClicked: 
-                {
-                    if (mpvContextMenu.visible) 
-                    {
-                        return
-                    }
-                    mpvContextMenu.visible = !mpvContextMenu.visible
-                    const menuHeight = mpvContextMenu.count * mpvContextMenu.itemAt(0).height
-                    mpvContextMenu.popup(footer, mpv.width, -menuHeight)
+                onClicked: {
+                                    if (mpvContextMenu.visible) {
+                                        return
+                                    }
+
+                                    mpvContextMenu.visible = !mpvContextMenu.visible
+                                    const menuHeight = mpvContextMenu.count * mpvContextMenu.itemAt(0).height
+                                    mpvContextMenu.popup(footer, mpv.width, -menuHeight)
                 }
             }
         }
 
-        Image 
-        {
+        Image {
             width: window.officalScale * 20
             height: width
             sourceSize.width: width
@@ -288,15 +274,12 @@ ToolBar {
             visible: false
             MouseArea{
                 anchors.fill: parent
-                onClicked: 
-                {
+                onClicked: {
                     mpv.setProperty("mute", !mpv.getProperty("mute"))
-                    if (mpv.getProperty("mute")) 
-                    {
+                    if (mpv.getProperty("mute")) {
                         text = qsTr("Unmute")
                         icon.name = "player-volume-muted"
-                    } else 
-                    {
+                    } else {
                         text = qaction.text
                         icon.name = qaction.iconName()
                     }
@@ -304,10 +287,13 @@ ToolBar {
             }
         }
 
-        Rectangle 
-        {
+        Rectangle {
             id: marginArea
             width: 50 * window.officalScale
         }
+
+        // VolumeSlider { id: volume
+        //     visible: false
+        // }
     }
 }
