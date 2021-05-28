@@ -6,9 +6,9 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ## Base On Haruna (https://github.com/g-fb/haruna)
 
-# Jing-Haruna Video Player
+# JingOS Video Player
 
-Jing-Haruna is an open source video player built with Qt/QML on top of libmpv.
+Videoplayer is an open source video player built with Qt/QML on top of libmpv.
 
 # Install
 
@@ -42,9 +42,9 @@ These are just some features that set Jing-Haruna apart from others players
 
 - Home: www.jingos.com
   
-- Project page: https://github.com/JingOS-team/jing-haruna
+- Project page: https://github.com/JingOS-team/videoplayer
   
-- File issues: https://github.com/JingOS-team/jing-haruna/issues
+- File issues: https://github.com/JingOS-team/videoplayer/issues
   
 - Development channel: www.jingos.com
 
