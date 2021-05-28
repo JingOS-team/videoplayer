@@ -1,7 +1,6 @@
 /*
  *   Copyright 2012-2013 Daniel Nicoletti <dantti12@gmail.com>
  *   Copyright 2013, 2015 Kai Uwe Broulik <kde@privat.broulik.de>
- *   Copyright 2020 Wang Rui <wangrui@jingos.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as
@@ -61,6 +60,7 @@ RowLayout {
             width: parent.width
             onMoved: brightnessRoot.moved()
             from: 1
+            //stepSize: 1
         }
     }
 }

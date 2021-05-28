@@ -1,6 +1,6 @@
 #
 # SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
-# SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+#
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
@@ -36,7 +36,6 @@ target_link_libraries(haruna PRIVATE
     Qt5::Quick
     Qt5::QuickControls2
     Qt5::DBus
-
     KF5::ConfigGui
     KF5::CoreAddons
     KF5::FileMetaData

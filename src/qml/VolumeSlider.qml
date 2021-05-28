@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -36,7 +36,7 @@ Slider {
         Rectangle {
             width: visualPosition * parent.width
             height: parent.height
-            color: "white"
+            color: "white" /*Kirigami.Theme.highlightColor*/
             radius: 0
         }
     }

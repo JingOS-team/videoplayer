@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
- * SPDX-License-Identifier: LGPL-2.1-or-later
- */
-
 #ifndef __HARUHA_PLAYER__
 #define __HARUHA_PLAYER__
 

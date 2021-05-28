@@ -51,6 +51,7 @@
         <file>image/bri.png</file>
         <file>image/video_back.png</file>
         <file>image/video_forward.png</file>
+        <file>image/media_new.svg</file>
 
         
     </qresource>

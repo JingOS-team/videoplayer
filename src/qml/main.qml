@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -22,9 +22,11 @@ Kirigami.ApplicationWindow {
     id: window
 
     property var configure: app.action("configure")
+
     property int  deviceWidth: 1920
     property int deviceHeight: 1200
-    property real officalScale: 0.8
+
+    property real officalScale: /*deviceWidth / officalWidth*/0.5
 
     visible: true
     title: mpv.mediaTitle || qsTr("Haruna")
@@ -44,7 +46,7 @@ Kirigami.ApplicationWindow {
         }
     }
 
-    onActiveChanged:
+    onActiveChanged://是否需要切换到后台以后暂停
     {
         if(!Qt.application.active)
         {
@@ -53,7 +55,7 @@ Kirigami.ApplicationWindow {
     }
 
 
-    property Action playPauseAction: Action {
+    property Action playPauseAction: Action {//监听空格
         id: playPauseAction
         text: qsTr("Play/Pause")
         icon.name: "media-playback-pause"
@@ -72,41 +74,42 @@ Kirigami.ApplicationWindow {
 
     PlayList { id: playList }
 
-    Header
+    Header//顶部的视频名称
     {
         id: header
         width: parent.width
-        height: officalScale * 160
+        height: 80
         visible: true
 
-        background: Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            LinearGradient {            
-                anchors.fill: parent
-                start: Qt.point(0, 0)
-                gradient: Gradient {
-                    GradientStop {  position: 0.0;    color: "#a0000000" }
-                    GradientStop {  position: 1.0;    color: "#00000000" }
-                }
-            }
-        }
+        // background: Rectangle {
+        //     anchors.fill: parent
+        //     color: "transparent"
+        //     LinearGradient {            ///--[Mark]
+        //         anchors.fill: parent
+        //         start: Qt.point(0, 0)
+        //         gradient: Gradient {
+        //             GradientStop {  position: 0.0;    color: "#a0000000" }
+        //             GradientStop {  position: 1.0;    color: "#00000000" }
+        //         }
+        //     }
+        // }
     }
 
-    Footer {
+    Footer {//底部的bar
         id: footer
-        height: officalScale * 160
+        height: 80
     }
+
 
     function openFile(path, startPlayback, loadSiblings) {
-    mpv.command(["loadfile", path])
-    mpv.setProperty("pause", !startPlayback)
+        mpv.command(["loadfile", path])
+        mpv.setProperty("pause", !startPlayback)
 
-    var pathStr = path.toString();
-    var index = pathStr.lastIndexOf("/")
-    header.currentname = pathStr.substring(index + 1)
-    mpv.setProperty("currentname", pathStr.substring(index + 1))
+        var pathStr = path.toString();
+        var index = pathStr.lastIndexOf("/")
+        header.currentname = pathStr.substring(index + 1)
+        mpv.setProperty("currentname", pathStr.substring(index + 1))
 
-    GeneralSettings.lastPlayedFile = path
+        GeneralSettings.lastPlayedFile = path
     }
 }

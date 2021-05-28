@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -20,7 +20,7 @@ GeneralSettings::GeneralSettings(QObject *parent)
         {"LastPlayedFile", QVariant(QStringLiteral())},
         {"LastUrl",        QVariant(QStringLiteral())},
         {"Volume",         QVariant(75)},
-        {"Brightness",     QVariant(75)},
+        {"Brightness",     QVariant(75)},//add by hjy
         {"ShowMenuBar",    QVariant(true)},
         {"ShowHeader",     QVariant(true)},
         {"ColorScheme",    QVariant(QStringLiteral())}

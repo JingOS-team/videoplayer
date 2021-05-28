@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -44,9 +44,9 @@ class GeneralSettings : public Settings
                NOTIFY volumeChanged)
 
     Q_PROPERTY(int brightness
-               READ brightness
-               WRITE setBrightness
-               NOTIFY brightnessChanged)
+            READ brightness
+            WRITE setBrightness
+            NOTIFY brightnessChanged)//add by hjy
 
     Q_PROPERTY(QString lastPlayedFile
                READ lastPlayedFile
@@ -95,8 +95,8 @@ public:
     int volume();
     void setVolume(int vol);
 
-    int brightness();
-    void setBrightness(int value);
+    int brightness();//add by hjy
+    void setBrightness(int value);//add by hjy
 
     QString lastPlayedFile();
     void setLastPlayedFile(const QString &file);
@@ -133,7 +133,7 @@ signals:
     void showMenuBarChanged();
     void showHeaderChanged();
     void colorSchemeChanged();
-    void brightnessChanged();
+    void brightnessChanged();//add by hjy
 
 };
 

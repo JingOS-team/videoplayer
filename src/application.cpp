@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 George Florea Bănuș <georgefb899@gmail.com>
- * SPDX-FileCopyrightText: 2021 Wang Rui <wangrui@jingos.com>
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -115,7 +115,7 @@ void Application::activateColorScheme(const QString &name)
 void Application::configureShortcuts()
 {
     KShortcutsDialog dlg(KShortcutsEditor::ApplicationAction, KShortcutsEditor::LetterShortcutsAllowed, nullptr);
-    connect(&dlg, &KShortcutsDialog::accepted, this, [ = ]() {
+    connect(&dlg, &KShortcutsDialog::accepted, this, [ = ](){
         m_collection.writeSettings(m_shortcuts);
         m_config->sync();
     });

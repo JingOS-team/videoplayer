@@ -30,7 +30,7 @@ void Worker::getVideoDuration(int index, const QString &path)
     KFileMetaData::ExtractorCollection exCol;
     QList<KFileMetaData::Extractor*> extractors = exCol.fetchExtractors(type.name());
     KFileMetaData::SimpleExtractionResult result(path, type.name(),
-            KFileMetaData::ExtractionResult::ExtractMetaData);
+    KFileMetaData::ExtractionResult::ExtractMetaData);
     KFileMetaData::Extractor* ex = extractors.first();
     ex->extract(&result);
     auto properties = result.properties();
